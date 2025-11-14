@@ -43,9 +43,6 @@ startMusic();
 
 // When bday.js signals balloons are finished, reveal cake and CTA
 document.addEventListener('balloons:finished', () => {
-    // show music toggle
-    musicToggle.hidden = false;
-
     // switch to cake section
     if (cakeSection) {
         // small delay to let canvas fade if needed
@@ -117,8 +114,12 @@ document.addEventListener('balloons:finished', () => {
 
 /* basic scene switcher */
 function showScene(el) {
+    if (!el) return;
     // hide all
-    $$('.scene').forEach(s => s.classList.remove('active'));
+    $$('.scene').forEach(s => {
+        s.classList.remove('active');
+        s.classList.remove('leave');
+    });
     el.classList.add('active');
 }
 
@@ -212,9 +213,6 @@ function closeLetterModal() {
 document.addEventListener('DOMContentLoaded', () => {
     // start music attempt
     startMusic();
-    updateMusicToggle();
-    // hide music toggle until balloons are finished
-    musicToggle.hidden = true;
 
     // show intro first
     showScene(intro);
@@ -226,11 +224,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // fade intro away
         intro.classList.add('leave');
         setTimeout(() => {
-            intro.classList.remove('active', 'leave');
+            intro.classList.remove('active');
+            intro.classList.remove('leave');
             // show balloon section
             showScene(balloonSection);
             startBalloonsFlow();
-        }, 600);
+        }, 650);
     }, HEARTS_DURATION);
 
     // click handlers

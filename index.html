@@ -9,12 +9,14 @@
 </head>
 
 <body>
-  <!-- MUSIC + TOGGLE -->
-  <audio id="bg-music" src="piano.mp3" loop></audio>
+  <!-- MUSIC -->
+  <audio id="bg-music" src="piano.mp3" loop autoplay></audio>
 
   <!-- SECTION 1: Intro -->
   <main id="page">
     <section id="intro" class="scene active">
+      <div class="intro-floating intro-floating--left" aria-hidden="true"></div>
+      <div class="intro-floating intro-floating--right" aria-hidden="true"></div>
       <div class="intro-center">
         <h1 class="headline">TODAY IS THE DAY!</h1>
 
@@ -33,8 +35,9 @@
     <!-- SECTION 2: Balloon canvas will be injected here by main.js -->
     <section id="balloon-section" class="scene">
       <div class="overlay-cta" id="balloon-cta" hidden>
-        <!-- If no cake section present, show the CTA here after balloons finish -->
         <button id="see-gifts-btn" hidden>See your gifts</button>
+      <div class="intro-floating intro-floating--left" aria-hidden="true"></div>
+      <div class="intro-floating intro-floating--right" aria-hidden="true"></div>
       </div>
     </section>
 
@@ -43,6 +46,8 @@
   <!-- Letter modal shown after clicking "See your gifts" -->
   <div id="letter-modal" class="modal" hidden aria-hidden="true">
     <div class="modal-backdrop"></div>
+    <div class="intro-floating intro-floating--left" aria-hidden="true"></div>
+    <div class="intro-floating intro-floating--right" aria-hidden="true"></div>
     <div class="modal-inner" role="dialog" aria-modal="true">
       <button id="letter-close" class="close" aria-label="Close">✕</button>
       <div class="modal-content">
