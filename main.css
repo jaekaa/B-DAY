@@ -1,0 +1,543 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+:root {
+    --bg-dark: #200019;
+    --pink-1: #7ad9ff;
+    --pink-2: #4d85ff;
+    --red: #2da4ff;
+    --blue: #6ec8ff;
+    --card: #f6fcff;
+    --glass: rgba(255, 255, 255, 0.06);
+    --muted: #ddf9ff;
+    --accent: #417ac5;
+    --text: #fff;
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+* {
+    box-sizing: border-box
+}
+
+html,
+body,
+#page {
+    height: 100%;
+    margin: 0;
+    font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+    color: var(--text)
+}
+
+body {
+    background: linear-gradient(135deg, #ffffff 0%, #f1feff 100%);
+    overflow: hidden;
+}
+
+/* music toggle */
+#music-toggle {
+    position: fixed;
+    right: 18px;
+    top: 18px;
+    z-index: 1000;
+    background: var(--glass);
+    color: var(--text);
+    border: none;
+    padding: 10px 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    box-shadow: var(--shadow);
+}
+
+/* Scenes */
+.scene {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity .6s ease, transform .6s ease;
+    pointer-events: none
+}
+
+.scene.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0)
+}
+
+.scene.leave {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px)
+}
+
+/* Intro */
+#intro {
+    overflow: hidden
+}
+
+.intro-center {
+    text-align: center;
+    transform: translateY(-30px)
+}
+
+.headline {
+    font-weight: 800;
+    letter-spacing: 6px;
+    color: #4a90e2;
+    margin: 0;
+    font-size: 36px;
+    text-shadow: 0 2px 8px rgba(74, 144, 226, 0.15);
+}
+
+.date-boxes {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 18px
+}
+
+.date-item {
+    background: linear-gradient(135deg, #99dfff 0%, #6bb3ff 100%);
+    color: white;
+    padding: 14px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.25);
+    width: 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: center
+}
+
+.date-item .big {
+    font-weight: 700;
+    font-size: 22px
+}
+
+.date-item .small {
+    font-size: 11px;
+    opacity: .85
+}
+
+.intro-sub {
+    margin-top: 14px;
+    color: var(--accent);
+    font-size: 14px
+}
+
+/* hearts container */
+#hearts-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 10
+}
+
+/* Balloon section: canvas will sit here */
+#balloon-section {
+    background: transparent
+}
+
+#balloon-section canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block
+}
+
+.overlay-cta {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    pointer-events: auto;
+}
+
+#see-gifts-btn {
+    background: linear-gradient(135deg, #99eeff 0%, #6bb5ff 100%);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 24px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(107, 142, 255, 0.3);
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+#see-gifts-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(107, 184, 255, 0.4);
+}
+
+/* Primary button (used in modal) */
+.primary {
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(74, 144, 226, 0.3);
+    transition: all 0.3s ease;
+    font-size: 15px;
+}
+
+.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(74, 144, 226, 0.4);
+}
+
+.primary:active {
+    transform: translateY(0);
+}
+
+/* Modal backdrop & stacking so modal-inner is clickable above the backdrop */
+.modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 1;
+}
+
+.modal-inner {
+    position: relative;
+    z-index: 2;
+}
+
+/* Responsive adjustments for small screens */
+@media (max-width: 480px) {
+    #see-gifts-btn {
+        padding: 12px 18px;
+        font-size: 15px;
+        border-radius: 18px;
+    }
+
+    .overlay-cta {
+        padding: 8px;
+    }
+}
+
+/* Greeting */
+#greeting {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 4rem 1.5rem;
+    color: #3a3a3a;
+    text-align: center;
+}
+
+.greet-top {
+    margin-bottom: 2rem;
+    margin: -6em auto 0 auto;
+    width: min(80vw, 320px);
+    height: auto;
+}
+
+.greet-top .greet-title {
+    font-size: 2.8rem;
+    font-weight: 400;
+    color: var(--pink-1);
+    margin-bottom: 0.5rem;
+    font-family: 'Pacifico', cursive;
+}
+
+.greet-top .greet-body {
+    max-width: 900px;
+    width: 100%;
+}
+
+.greet-top .greet-caption {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #555;
+}
+
+/* Primary button style */
+#greeting .primary {
+    background-color: #1eace9;
+    color: #fff;
+    border: none;
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#greeting .primary:hover {
+    background-color: #1b93d8;
+    transform: translateY(-2px);
+}
+
+.primary {
+    background: linear-gradient(90deg, var(--blue), var(--pink-2));
+    color: #111;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 700;
+    cursor: pointer
+}
+
+/* Photo grid */
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* 2 columns */
+    gap: 2rem;
+    max-width: 900px;
+    /* center the grid */
+    margin: 2rem auto;
+}
+
+.photo {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.photo img {
+    width: 100%;
+    height: 300px;
+    /* big visible size */
+    object-fit: cover;
+    display: block;
+}
+
+.photo .caption {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 0.5rem 0;
+    background: rgba(255, 255, 255, 0.85);
+    text-align: center;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Modal (letter) - top-level styles so modal displays correctly */
+.modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.6));
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+/* Ensure the `hidden` attribute actually hides the modal even if `.modal` sets display */
+.modal[hidden] {
+    display: none !important;
+}
+
+.modal-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 700px;
+    background: linear-gradient(135deg, #f5ffff 0%, #e0fbff 100%);
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    color: #3d2a1f;
+}
+
+.modal-inner h2 {
+    font-size: 28px;
+    color: #4a90e2;
+    margin: 0 0 20px 0;
+    text-align: center;
+    font-family: 'Pacifico', cursive;
+    letter-spacing: 1px;
+}
+
+.modal .close {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    border: none;
+    background: rgba(255, 107, 107, 0.2);
+    color: #3ca8e7;
+    font-size: 24px;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.modal .close:hover {
+    background: rgba(255, 107, 107, 0.4);
+}
+
+.letter-body {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 12px;
+    margin: 16px 0;
+    color: #2c1810;
+    line-height: 1.8;
+    font-size: 16px;
+    text-align: left;
+    border-left: 4px solid #99f5ff;
+}
+
+.letter-body p {
+    margin: 12px 0;
+}
+
+.modal-content {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+/* mobile modal adjustments */
+@media (max-width: 480px) {
+    .modal {
+        padding: 12px;
+    }
+
+    .modal-inner {
+        width: 100%;
+        max-width: 100%;
+        padding: 20px;
+        border-radius: 16px;
+    }
+
+    .modal-inner h2 {
+        font-size: 22px;
+        margin-bottom: 16px;
+    }
+
+    .letter-body {
+        padding: 16px;
+        font-size: 14px;
+        line-height: 1.6;
+        margin: 12px 0;
+    }
+
+    .letter-body p {
+        margin: 10px 0;
+    }
+
+    .modal .close {
+        width: 32px;
+        height: 32px;
+        font-size: 20px;
+    }
+}
+
+/* Mobile responsiveness for intro and buttons */
+@media (max-width: 480px) {
+    #see-gifts-btn {
+        padding: 12px 18px;
+        font-size: 15px;
+        border-radius: 18px;
+        box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+    }
+
+    .overlay-cta {
+        padding: 8px;
+    }
+
+    .headline {
+        font-size: 28px;
+        letter-spacing: 4px;
+    }
+
+    .date-boxes {
+        gap: 10px;
+        margin-top: 12px;
+    }
+
+    .date-item {
+        width: 70px;
+        padding: 10px 14px;
+    }
+
+    .date-item .big {
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .date-item .small {
+        font-size: 10px;
+    }
+
+    .intro-center {
+        transform: translateY(-20px);
+    }
+
+    .intro-sub {
+        font-size: 14px;
+        margin-top: 10px;
+    }
+
+    .primary {
+        padding: 11px 20px;
+        font-size: 14px;
+        border-radius: 18px;
+    }
+
+    .photo-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 10px;
+        margin-top: 12px;
+        width: 100%
+    }
+
+    .photo img {
+        height: 100px
+    }
+
+    .photo .caption {
+        font-size: 11px;
+        left: 6px;
+        bottom: 6px
+    }
+}
+
+/* Medium tablets (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+    .photo-grid {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 12px;
+        width: 95%
+    }
+
+    .photo img {
+        height: 120px
+    }
+}
+
+/* Large tablets and desktops (769px+) */
+@media (min-width: 769px) {
+    .photo-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        width: 90%
+    }
+
+    .photo img {
+        height: 150px
+    }
+}

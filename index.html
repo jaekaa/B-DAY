@@ -1,15 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="birthday.css" />
-    <title>Happy birthday</title>
-  </head>
-  <body>
 
-    <canvas id="c"></canvas>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Yay</title>
+  <link rel="stylesheet" href="main.css" />
+</head>
 
-    <script src="bday.js"></script>
-  </body>
+<body>
+  <!-- MUSIC + TOGGLE -->
+  <audio id="bg-music" src="piano.mp3" loop></audio>
+
+  <!-- SECTION 1: Intro -->
+  <main id="page">
+    <section id="intro" class="scene active">
+      <div class="intro-center">
+        <h1 class="headline">TODAY IS THE DAY!</h1>
+
+        <div class="date-boxes" aria-hidden="true">
+          <div class="date-item"><span class="big">11</span><span class="small">MM</span></div>
+          <div class="date-item"><span class="big">15</span><span class="small">DD</span></div>
+          <div class="date-item"><span class="big">2025</span><span class="small">YYYY</span></div>
+        </div>
+
+        <div class="intro-sub">A special day for you💗</div>
+      </div>
+
+      <div id="hearts-container" aria-hidden="true"></div>
+    </section>
+
+    <!-- SECTION 2: Balloon canvas will be injected here by main.js -->
+    <section id="balloon-section" class="scene">
+      <div class="overlay-cta" id="balloon-cta" hidden>
+        <!-- If no cake section present, show the CTA here after balloons finish -->
+        <button id="see-gifts-btn" hidden>See your gifts</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Letter modal shown after clicking "See your gifts" -->
+  <div id="letter-modal" class="modal" hidden aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-inner" role="dialog" aria-modal="true">
+      <button id="letter-close" class="close" aria-label="Close">✕</button>
+      <div class="modal-content">
+        <h2>💌 A Letter for You 💌</h2>
+        <div class="letter-body">
+          <p><strong>Happy Birthday, my Baby.</strong></p>
+
+          <p>Today is your special day, but to me, every day feels special because I get to spend it with you. I just
+            want to take this moment to tell you how deeply grateful I am for you — for your patience, for your
+            kindness, for your love.</p>
+
+          <p>Thank you for being the person who listens to me even when I struggle to find the right words, and who
+            stays even when I feel unlovable. You make me feel seen, understood, and safe in a way I never thought
+            possible. I hope you know how much your presence means to me — how much you mean to me.</p>
+
+          <p>Minsan hindi ko nasasabi nang buo, pero sobra kitang na-aappreciate. Yung simpleng pangungumusta mo, yung
+            mga lambing mo, yung mga times na you choose to stay and try… those little things, they stay with me. You
+            make my heart softer, calmer, and happier.</p>
+
+          <p>I love you not just for the good moments, but for the days when things get difficult and we still choose
+            each other. I love you for your dreams, your softness, your strength, and even the things you're still
+            learning about yourself. I love you on the days you shine, and even more on the days you don't feel like you
+            do.</p>
+
+          <p>On your birthday, I want you to feel the warmth, care, and love you always give to those around you. You
+            deserve so much joy, peace, and fulfillment. I pray that life becomes kinder to you, that your dreams come
+            closer, and that you continue to grow into the amazing person you already are.</p>
+
+          <p>And as you move forward, I want you to remember this: <strong>I'm here. I'm with you. I'm choosing
+              you</strong> — today, tomorrow, and for every version of the future we'll build together.</p>
+
+          <p><strong>Happy Birthday Marc ko💗</strong><br>
+            Thank you for being you.<br>
+            Thank you for being mine.</p>
+
+          <p><strong>I love you!! Mwah</strong></p>
+
+          <p style="text-align: right; font-style: italic;">— Nikkaヾ(≧ ▽ ≦)ゝ</p>
+        </div>
+        <div style="text-align:center;margin-top:16px;">
+          <button id="open-gift" class="primary">Close & Celebrate 🎉</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+
+</body>
+
 </html>

@@ -3,12 +3,16 @@ let w = (c.width = window.innerWidth),
   ctx = c.getContext("2d"),
   hw = w / 2;
 (hh = h / 2),
+  // Calculate responsive scaling factor
+  (isMobile = w < 481),
+  (isTablet = w >= 481 && w < 769),
+  (scaleFactor = isMobile ? 0.6 : isTablet ? 0.8 : 1),
   (opts = {
     // change the text in here //
     strings: ["HAPPY", "BIRTHDAY!", "TO YOU", "BABY!"],
-    charSize: 30,
-    charSpacing: 35,
-    lineHeight: 40,
+    charSize: Math.floor(30 * scaleFactor),
+    charSpacing: Math.floor(35 * scaleFactor),
+    lineHeight: Math.floor(40 * scaleFactor),
 
     cx: w / 2,
     cy: h / 2,
@@ -19,8 +23,8 @@ let w = (c.width = window.innerWidth),
     fireworkSpawnTime: 200,
     fireworkBaseReachTime: 30,
     fireworkAddedReachTime: 30,
-    fireworkCircleBaseSize: 20,
-    fireworkCircleAddedSize: 10,
+    fireworkCircleBaseSize: Math.floor(20 * scaleFactor),
+    fireworkCircleAddedSize: Math.floor(10 * scaleFactor),
     fireworkCircleBaseTime: 30,
     fireworkCircleAddedTime: 30,
     fireworkCircleFadeBaseTime: 10,
@@ -30,16 +34,16 @@ let w = (c.width = window.innerWidth),
     fireworkShardPrevPoints: 3,
     fireworkShardBaseVel: 4,
     fireworkShardAddedVel: 2,
-    fireworkShardBaseSize: 3,
-    fireworkShardAddedSize: 3,
+    fireworkShardBaseSize: Math.floor(3 * scaleFactor),
+    fireworkShardAddedSize: Math.floor(3 * scaleFactor),
     gravity: 0.1,
     upFlow: -0.1,
     letterContemplatingWaitTime: 360,
     balloonSpawnTime: 20,
     balloonBaseInflateTime: 10,
     balloonAddedInflateTime: 10,
-    balloonBaseSize: 20,
-    balloonAddedSize: 20,
+    balloonBaseSize: Math.floor(20 * scaleFactor),
+    balloonAddedSize: Math.floor(20 * scaleFactor),
     balloonBaseVel: 0.4,
     balloonAddedVel: 0.4,
     balloonBaseRadian: -(Math.PI / 2 - 0.5),
@@ -148,9 +152,9 @@ Letter.prototype.step = function () {
         this.shards = [];
 
         var shardCount =
-            (opts.fireworkBaseShards +
-              opts.fireworkAddedShards * Math.random()) |
-            0,
+          (opts.fireworkBaseShards +
+            opts.fireworkAddedShards * Math.random()) |
+          0,
           angle = Tau / shardCount,
           cos = Math.cos(angle),
           sin = Math.sin(angle),
@@ -232,7 +236,7 @@ Letter.prototype.step = function () {
         (opts.balloonBaseSize + opts.balloonAddedSize * Math.random()) | 0;
 
       var rad =
-          opts.balloonBaseRadian + opts.balloonAddedRadian * Math.random(),
+        opts.balloonBaseRadian + opts.balloonAddedRadian * Math.random(),
         vel = opts.balloonBaseVel + opts.balloonAddedVel * Math.random();
 
       this.vx = Math.cos(rad) * vel;
@@ -343,33 +347,38 @@ Shard.prototype.step = function () {
 function generateBalloonPath(x, y, size) {
   ctx.moveTo(x, y);
   ctx.bezierCurveTo(
-    x - size / 2,
-    y - size / 2,
-    x - size / 4,
+    x - size / 6,
+    y - size / 4,
+    x - size / 6,
     y - size,
     x,
     y - size
   );
-  ctx.bezierCurveTo(x + size / 4, y - size, x + size / 2, y - size / 2, x, y);
+  ctx.bezierCurveTo(x + size / 6, y - size, x + size / 4, y - size / 6, x, y);
 }
+
+let balloonButtonShown = false; // flag to ensure the button appears only once
 
 function anim() {
   window.requestAnimationFrame(anim);
-
-  ctx.fillStyle = "#111";
-  ctx.fillRect(0, 0, w, h);
+  ctx.clearRect(0, 0, w, h);
 
   ctx.translate(hw, hh);
 
-  var done = true;
-  for (var l = 0; l < letters.length; ++l) {
+  let done = true;
+  for (let l = 0; l < letters.length; ++l) {
     letters[l].step();
     if (letters[l].phase !== "done") done = false;
   }
 
   ctx.translate(-hw, -hh);
 
-  if (done) for (var l = 0; l < letters.length; ++l) letters[l].reset();
+  // ✅ Show the button once when balloons are done
+  if (done && !balloonButtonShown) {
+    // dispatch a DOM event so the page can react (reveal preview, show CTA, etc.)
+    document.dispatchEvent(new CustomEvent('balloons:finished'));
+    balloonButtonShown = true;
+  }
 }
 
 for (let i = 0; i < opts.strings.length; ++i) {
@@ -378,11 +387,11 @@ for (let i = 0; i < opts.strings.length; ++i) {
       new Letter(
         opts.strings[i][j],
         j * opts.charSpacing +
-          opts.charSpacing / 2 -
-          (opts.strings[i].length * opts.charSize) / 2,
+        opts.charSpacing / 2 -
+        (opts.strings[i].length * opts.charSize) / 2,
         i * opts.lineHeight +
-          opts.lineHeight / 2 -
-          (opts.strings.length * opts.lineHeight) / 2
+        opts.lineHeight / 2 -
+        (opts.strings.length * opts.lineHeight) / 2
       )
     );
   }
@@ -397,5 +406,28 @@ window.addEventListener("resize", function () {
   hw = w / 2;
   hh = h / 2;
 
+  // Recalculate scale factor
+  isMobile = w < 481;
+  isTablet = w >= 481 && w < 769;
+  scaleFactor = isMobile ? 0.6 : isTablet ? 0.8 : 1;
+
+  // Update font size
+  opts.charSize = Math.floor(30 * scaleFactor);
   ctx.font = opts.charSize + "px Verdana";
+
+  // Optional: recalc letters positions
+  letters.forEach((letter, idx) => {
+    const line = Math.floor(idx / opts.strings[0].length);
+    const charIdx = idx % opts.strings[line].length;
+    letter.x =
+      charIdx * opts.charSpacing +
+      opts.charSpacing / 2 -
+      (opts.strings[line].length * opts.charSize) / 2;
+    letter.y =
+      line * opts.lineHeight +
+      opts.lineHeight / 2 -
+      (opts.strings.length * opts.lineHeight) / 2;
+    letter.fireworkDy = letter.y - hh;
+  });
 });
+
